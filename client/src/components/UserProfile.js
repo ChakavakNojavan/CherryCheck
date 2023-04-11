@@ -1,0 +1,197 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import LogoutButton from "./LogoutButton";
+
+const Profile = () => {
+  const { user } = useAuth0();
+  const [likes, setLikes] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [_id, set_id] = useState(null);
+  const [likedProducts, setLikedProducts] = useState([]);
+  const [reviewedProducts, setReviewedProducts] = useState([]);
+
+  useEffect(() => {
+    if (user?.sub) {
+      fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          set_id(data._id);
+        });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (_id) {
+      fetchUserData();
+    }
+  }, [_id]);
+  async function fetchProductData(productCodes) {
+    const products = [];
+    for (const code of productCodes) {
+      try {
+        const response = await axios.get(`/api/product/${code}`);
+        products.push(response.data.product);
+      } catch (error) {
+        console.error(`Error fetching product data for code ${code}:`, error);
+      }
+    }
+    return products;
+  }
+  async function handleDeleteReview(productId) {
+    try {
+      await axios.delete(`/api/review/${_id}/${productId}`);
+      fetchUserData(); // Refetch user data to update the displayed reviews
+    } catch (error) {
+      console.error("Error deleting review:", error);
+    }
+  }
+
+  async function fetchUserData() {
+    if (!_id) {
+      console.error("Error fetching user data: _id is null");
+      return;
+    }
+
+    try {
+      const likesResponse = await axios.get(`/api/user/${_id}/likes`);
+
+      const likesData = likesResponse.data;
+      if (likesData.error) {
+        console.error("Client: fetchUserData likesData:", likesData);
+      } else {
+        setLikes(likesData);
+      }
+
+      const reviewsResponse = await axios.get(`/api/user/${_id}/reviews`);
+
+      const reviewsData = reviewsResponse.data;
+      if (reviewsData.error) {
+        console.error("Client: fetchUserData reviewsData:", reviewsData);
+      } else {
+        setReviews(reviewsData);
+      }
+      const likedProductsData = await fetchProductData(likesData);
+      setLikedProducts(likedProductsData);
+
+      const reviewedProductCodes = reviewsData.map(
+        (review) => review.productId
+      );
+      const reviewedProductsData = await fetchProductData(reviewedProductCodes);
+      setReviewedProducts(reviewedProductsData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+
+  return (
+    <Container>
+      <Header>
+        {user?.picture && <UserImg src={user.picture} alt={user?.name} />}
+        <h2>{user?.email}</h2>
+        <LogoutButton />
+      </Header>
+      <Section>
+        <h3>Favorites:</h3>
+        <FavoritesList>
+          {likedProducts.map(
+            (product, index) =>
+              product && (
+                <ListItem key={index}>
+                  <Img src={product?.image_url} />
+                </ListItem>
+              )
+          )}
+        </FavoritesList>
+      </Section>
+      <Section>
+        <h3>Reviews:</h3>
+        <ul>
+          {reviews.map((review, index) => {
+            const product = reviewedProducts.find(
+              (product) => product.code === review.productId
+            );
+            return (
+              product && (
+                <ListItem key={index}>
+                  <Img src={product?.image_url} />
+                  {product ? product.product_name : review.productId}:{" "}
+                  {review.review}
+                  <DeleteButton
+                    onClick={() => handleDeleteReview(review.productId)}
+                  >
+                    ❌
+                  </DeleteButton>
+                </ListItem>
+              )
+            );
+          })}
+        </ul>
+      </Section>
+    </Container>
+  );
+};
+
+export default Profile;
+
+const Container = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Roboto", sans-serif;
+`;
+
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+`;
+
+const UserImg = styled.img`
+  width: 100px;
+  border-radius: 50%;
+  margin-right: 1rem;
+`;
+
+const Section = styled.section`
+  margin-bottom: 2rem;
+`;
+
+const Img = styled.img`
+  width: 100px;
+  margin-right: 1rem;
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const FavoritesList = styled.ul`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+`;
+const ImgReview = styled.img`
+  width: 70px;
+  height: 70px;
+  margin-right: 1rem;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+const DeleteButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+`;

@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 import styled from "styled-components";
 
 const Icon = styled(FaUserCircle)`
-  font-size: 95px;
+  font-size: 100px;
   color: rgb(91, 17, 0);
   pointer-events: none;
 `;
@@ -13,8 +13,8 @@ const IconContainer = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 95px;
-  height: 95px;
+  width: 100px;
+  height: 100px;
   &:hover {
     cursor: pointer;
   }

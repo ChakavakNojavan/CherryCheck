@@ -140,7 +140,7 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
               <BannerImg src={BannerImage} />
               <IconsContainer>
                 <SearchIcon>
-                  <HiSearchCircle size={115} onClick={handleSearchClick} />
+                  <HiSearchCircle size={136} onClick={handleSearchClick} />
                 </SearchIcon>
                 <Auth0Container>
                   <Auth0 />
@@ -335,9 +335,9 @@ const Description = styled.p`
 `;
 const BannerImg = styled.img`
   position: absolute;
-  top: 5px;
+  top: 0;
   left: 50px;
-  height: 90px;
+  height: 80px;
 `;
 const Element1 = styled.div`
   display: flex;
@@ -353,8 +353,8 @@ const Element1 = styled.div`
 
 const SearchIcon = styled.div`
   position: absolute;
-  top: 20px;
-  left: 1100px;
+  top: 50px;
+  left: 900px;
 `;
 const Element2 = styled.div`
   display: flex;

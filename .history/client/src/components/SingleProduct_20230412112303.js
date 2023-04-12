@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import styled, { keyframes } from "styled-components";
 import {
@@ -14,7 +13,6 @@ import {
   GiDoubleFish,
   GiSesame,
 } from "react-icons/gi";
-import { HiSearchCircle } from "react-icons/hi";
 import ingImage from "./assets/ing.png";
 import alImage from "./assets/al.png";
 import ecoImage from "./assets/eco.png";
@@ -29,11 +27,6 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
   const [review, setReview] = useState("");
   const [liked, setLiked] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const navigate = useNavigate();
-
-  const handleSearchClick = () => {
-    navigate("/");
-  };
 
   const fetchProductReviews = async () => {
     try {
@@ -138,16 +131,10 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
           <StyledPage1>
             <Element1>
               <BannerImg src={BannerImage} />
-              <IconsContainer>
-                <SearchIcon>
-                  <HiSearchCircle size={115} onClick={handleSearchClick} />
-                </SearchIcon>
-                <Auth0Container>
-                  <Auth0 />
-                </Auth0Container>
-              </IconsContainer>
+              <Auth0Container>
+                <Auth0 />
+              </Auth0Container>
             </Element1>
-
             <Element2>
               <StyledColumn>
                 <Name>
@@ -318,11 +305,6 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
   );
 };
 export default SingleProduct;
-const IconsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
 
 const StyledContainer = styled.div`
   background-color: rgb(250, 239, 219);
@@ -335,27 +317,16 @@ const Description = styled.p`
 `;
 const BannerImg = styled.img`
   position: absolute;
-  top: 5px;
+  top: 0;
   left: 50px;
-  height: 90px;
 `;
 const Element1 = styled.div`
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 0 1rem;
-  z-index: 1000;
 `;
 
-const SearchIcon = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 1100px;
-`;
 const Element2 = styled.div`
   display: flex;
   flex-direction: row;

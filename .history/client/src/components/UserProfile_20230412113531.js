@@ -170,6 +170,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 2rem;
   font-family: "Roboto", sans-serif;
+  background-color: #f8f8f8;
 `;
 const H2 = styled.h2`
   font-size: 36px;

@@ -335,7 +335,7 @@ const Description = styled.p`
 `;
 const BannerImg = styled.img`
   position: absolute;
-  top: 5px;
+  top: 0;
   left: 50px;
   height: 90px;
 `;

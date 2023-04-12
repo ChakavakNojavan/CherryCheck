@@ -13,8 +13,6 @@ const Profile = () => {
   const [likedProducts, setLikedProducts] = useState([]);
   const [reviewedProducts, setReviewedProducts] = useState([]);
   const navigate = useNavigate();
-  const [loadingFavorites, setLoadingFavorites] = useState(false);
-  const [loadingReviews, setLoadingReviews] = useState(false);
 
   const handleProductClick = (productCode) => {
     navigate(`/products/${productCode}`);
@@ -65,8 +63,7 @@ const Profile = () => {
       console.error("Error fetching user data: _id is null");
       return;
     }
-    setLoadingFavorites(true);
-    setLoadingReviews(true);
+
     try {
       const likesResponse = await axios.get(`/api/user/${_id}/likes`);
 
@@ -95,11 +92,9 @@ const Profile = () => {
       setReviewedProducts(reviewedProductsData);
     } catch (error) {
       console.error("Error fetching user data:", error);
-    } finally {
-      setLoadingFavorites(false);
-      setLoadingReviews(false);
     }
   }
+
   return (
     <Container>
       <Title>My Profile</Title>
@@ -110,54 +105,46 @@ const Profile = () => {
       </Header>
       <Section>
         <H2>Favorites</H2>
-        {loadingFavorites ? (
-          <Loading />
-        ) : (
-          <FavoritesList>
-            {likedProducts.map(
-              (product, index) =>
-                product && (
-                  <ListItem key={index}>
-                    <Img
-                      src={product?.image_url}
-                      onClick={() => handleProductClick(product.code)}
-                    />
-                  </ListItem>
-                )
-            )}
-          </FavoritesList>
-        )}
+        <FavoritesList>
+          {likedProducts.map(
+            (product, index) =>
+              product && (
+                <ListItem key={index}>
+                  <Img
+                    src={product?.image_url}
+                    onClick={() => handleProductClick(product.code)}
+                  />
+                </ListItem>
+              )
+          )}
+        </FavoritesList>
       </Section>
       <Section>
         <H2>Reviews</H2>
-        {loadingReviews ? (
-          <Loading />
-        ) : (
-          <ul>
-            {reviews.map((review, index) => {
-              const product = reviewedProducts.find(
-                (product) => product.code === review.productId
-              );
-              return (
-                product && (
-                  <ListItem key={index}>
-                    <DeleteButton
-                      onClick={() => handleDeleteReview(review.productId)}
-                    >
-                      ❌
-                    </DeleteButton>
-                    <ImgReview
-                      src={product?.image_url}
-                      onClick={() => handleProductClick(product.code)}
-                    />
-                    {product ? product.product_name : review.productId}:{" "}
-                    {review.review}
-                  </ListItem>
-                )
-              );
-            })}
-          </ul>
-        )}
+        <ul>
+          {reviews.map((review, index) => {
+            const product = reviewedProducts.find(
+              (product) => product.code === review.productId
+            );
+            return (
+              product && (
+                <ListItem key={index}>
+                  <DeleteButton
+                    onClick={() => handleDeleteReview(review.productId)}
+                  >
+                    ❌
+                  </DeleteButton>
+                  <ImgReview
+                    src={product?.image_url}
+                    onClick={() => handleProductClick(product.code)}
+                  />
+                  {product ? product.product_name : review.productId}:{" "}
+                  {review.review}
+                </ListItem>
+              )
+            );
+          })}
+        </ul>
       </Section>
     </Container>
   );
@@ -170,6 +157,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 2rem;
   font-family: "Roboto", sans-serif;
+  background-color: #f8f8f8;
 `;
 const H2 = styled.h2`
   font-size: 36px;

@@ -130,34 +130,30 @@ const Profile = () => {
       </Section>
       <Section>
         <H2>Reviews</H2>
-        {loadingReviews ? (
-          <Loading />
-        ) : (
-          <ul>
-            {reviews.map((review, index) => {
-              const product = reviewedProducts.find(
-                (product) => product.code === review.productId
-              );
-              return (
-                product && (
-                  <ListItem key={index}>
-                    <DeleteButton
-                      onClick={() => handleDeleteReview(review.productId)}
-                    >
-                      ❌
-                    </DeleteButton>
-                    <ImgReview
-                      src={product?.image_url}
-                      onClick={() => handleProductClick(product.code)}
-                    />
-                    {product ? product.product_name : review.productId}:{" "}
-                    {review.review}
-                  </ListItem>
-                )
-              );
-            })}
-          </ul>
-        )}
+        <ul>
+          {reviews.map((review, index) => {
+            const product = reviewedProducts.find(
+              (product) => product.code === review.productId
+            );
+            return (
+              product && (
+                <ListItem key={index}>
+                  <DeleteButton
+                    onClick={() => handleDeleteReview(review.productId)}
+                  >
+                    ❌
+                  </DeleteButton>
+                  <ImgReview
+                    src={product?.image_url}
+                    onClick={() => handleProductClick(product.code)}
+                  />
+                  {product ? product.product_name : review.productId}:{" "}
+                  {review.review}
+                </ListItem>
+              )
+            );
+          })}
+        </ul>
       </Section>
     </Container>
   );
@@ -170,6 +166,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 2rem;
   font-family: "Roboto", sans-serif;
+  background-color: #f8f8f8;
 `;
 const H2 = styled.h2`
   font-size: 36px;

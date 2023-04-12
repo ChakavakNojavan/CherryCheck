@@ -50,31 +50,10 @@ const Profile = () => {
     }
     return products;
   }
-  async function fetchReviewData() {
-    try {
-      const reviewsResponse = await axios.get(`/api/user/${_id}/reviews`);
-
-      const reviewsData = reviewsResponse.data;
-      if (reviewsData.error) {
-        console.error("Client: fetchUserData reviewsData:", reviewsData);
-      } else {
-        setReviews(reviewsData);
-      }
-
-      const reviewedProductCodes = reviewsData.map(
-        (review) => review.productId
-      );
-      const reviewedProductsData = await fetchProductData(reviewedProductCodes);
-      setReviewedProducts(reviewedProductsData);
-    } catch (error) {
-      console.error("Error fetching review data:", error);
-    }
-  }
-
   async function handleDeleteReview(productId) {
     try {
       await axios.delete(`/api/review/${_id}/${productId}`);
-      fetchReviewData();
+      fetchUserData();
     } catch (error) {
       console.error("Error deleting review:", error);
     }
@@ -107,7 +86,7 @@ const Profile = () => {
       }
       const likedProductsData = await fetchProductData(likesData);
       setLikedProducts(likedProductsData);
-      await fetchReviewData();
+
       const reviewedProductCodes = reviewsData.map(
         (review) => review.productId
       );

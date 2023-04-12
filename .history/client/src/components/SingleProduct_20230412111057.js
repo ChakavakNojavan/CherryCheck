@@ -332,7 +332,6 @@ const Element2 = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 100px;
 `;
 
 const Name = styled.h1`

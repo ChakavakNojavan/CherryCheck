@@ -103,7 +103,7 @@ const Profile = () => {
         <LogoutButton />
       </Header>
       <Section>
-        <H2>Favorites</H2>
+        <H2>Favorites:</H2>
         <FavoritesList>
           {likedProducts.map(
             (product, index) =>
@@ -159,8 +159,7 @@ const Container = styled.div`
   background-color: #f8f8f8;
 `;
 const H2 = styled.h2`
-  font-size: 36px;
-  padding: 10px;
+  font-size: 40px;
 `;
 
 const Title = styled.h1`

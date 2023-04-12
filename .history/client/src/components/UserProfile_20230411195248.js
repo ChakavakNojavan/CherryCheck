@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import LogoutButton from "./LogoutButton";
-import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
   const { user } = useAuth0();
   const [likes, setLikes] = useState([]);
@@ -11,11 +11,6 @@ const Profile = () => {
   const [_id, set_id] = useState(null);
   const [likedProducts, setLikedProducts] = useState([]);
   const [reviewedProducts, setReviewedProducts] = useState([]);
-  const navigate = useNavigate();
-
-  const handleProductClick = (productCode) => {
-    navigate(`/products/${productCode}`);
-  };
 
   useEffect(() => {
     if (user?.sub) {
@@ -51,7 +46,7 @@ const Profile = () => {
   async function handleDeleteReview(productId) {
     try {
       await axios.delete(`/api/review/${_id}/${productId}`);
-      fetchUserData();
+      fetchUserData(); // Refetch user data to update the displayed reviews
     } catch (error) {
       console.error("Error deleting review:", error);
     }
@@ -96,30 +91,26 @@ const Profile = () => {
 
   return (
     <Container>
-      <Title>My Profile</Title>
       <Header>
         {user?.picture && <UserImg src={user.picture} alt={user?.name} />}
-        <H2>{user?.email}</H2>
+        <h2>{user?.email}</h2>
         <LogoutButton />
       </Header>
       <Section>
-        <H2>Favorites</H2>
+        <h3>Favorites:</h3>
         <FavoritesList>
           {likedProducts.map(
             (product, index) =>
               product && (
                 <ListItem key={index}>
-                  <Img
-                    src={product?.image_url}
-                    onClick={() => handleProductClick(product.code)}
-                  />
+                  <Img src={product?.image_url} />
                 </ListItem>
               )
           )}
         </FavoritesList>
       </Section>
       <Section>
-        <H2>Reviews</H2>
+        <h3>Reviews:</h3>
         <ul>
           {reviews.map((review, index) => {
             const product = reviewedProducts.find(
@@ -133,10 +124,7 @@ const Profile = () => {
                   >
                     ❌
                   </DeleteButton>
-                  <ImgReview
-                    src={product?.image_url}
-                    onClick={() => handleProductClick(product.code)}
-                  />
+                  <Img src={product?.image_url} />
                   {product ? product.product_name : review.productId}:{" "}
                   {review.review}
                 </ListItem>
@@ -156,22 +144,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 2rem;
   font-family: "Roboto", sans-serif;
-  background-color: #f8f8f8;
-`;
-const H2 = styled.h2`
-  font-size: 36px;
-  padding: 10px;
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 2rem;
 `;
 
 const Header = styled.header`
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
 `;

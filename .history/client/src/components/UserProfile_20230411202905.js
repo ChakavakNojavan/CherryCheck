@@ -159,7 +159,7 @@ const Container = styled.div`
   background-color: #f8f8f8;
 `;
 const H2 = styled.h2`
-  font-size: 36px;
+  font-size: 40px;
   padding: 10px;
 `;
 

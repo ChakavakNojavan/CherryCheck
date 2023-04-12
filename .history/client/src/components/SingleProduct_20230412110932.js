@@ -210,7 +210,7 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
           <StyledPage3>
             {product.nutrient_levels && (
               <StyledColumn>
-                <Title>Nutrient Levels</Title>
+                <h3>Nutrient Levels</h3>
                 <p>
                   Fat:{" "}
                   <NutrientLevel level={product.nutrient_levels.fat}>
@@ -332,7 +332,6 @@ const Element2 = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 100px;
 `;
 
 const Name = styled.h1`
@@ -354,7 +353,6 @@ const StyledImage = styled.img`
 `;
 const Title = styled.h3`
   font-weight: 900;
-  padding-bottom: 30px;
 `;
 const Textarea = styled.textarea``;
 const Button = styled.button``;

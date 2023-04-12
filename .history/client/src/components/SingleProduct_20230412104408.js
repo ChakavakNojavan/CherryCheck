@@ -143,7 +143,7 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
                 </Name>
 
                 <div>
-                  <Title>Reviews:</Title>
+                  <h3>Reviews:</h3>
                   {reviews.length === 0 ? (
                     <p>No reviews yet. Be the first to review this product!</p>
                   ) : (
@@ -203,14 +203,14 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
             </StyledColumn>
 
             <StyledColumn>
-              <Title>Ingredients</Title>
+              <h3>Ingredients</h3>
               <p>{product.ingredients_text}</p>
             </StyledColumn>
           </StyledPage2>
           <StyledPage3>
             {product.nutrient_levels && (
               <StyledColumn>
-                <Title>Nutrient Levels</Title>
+                <h3>Nutrient Levels:</h3>
                 <p>
                   Fat:{" "}
                   <NutrientLevel level={product.nutrient_levels.fat}>
@@ -249,7 +249,7 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
             </StyledColumn>
             {product.allergens_tags && (
               <StyledColumn>
-                <Title>Allergens</Title>
+                <h3>Allergens:</h3>
                 <ul>
                   {product.allergens_tags.map((allergen, index) => {
                     const { displayName, icon } = allergenInfo(allergen);
@@ -267,29 +267,20 @@ const SingleProduct = ({ userId, isAuthenticated }) => {
           <StyledPage5>
             <StyledColumn>
               {product.ecoscore_grade && (
-                <Div>
-                  <Title>Eco-Score</Title>
-                  <Description>
-                    An environmental impact score for the product, from A (best)
-                    to E (worst).
-                  </Description>
+                <div>
+                  <h3>Eco-Score:</h3>
                   <ScoreDisplay grade={product.ecoscore_grade}>
                     {product.ecoscore_grade.toUpperCase()}
                   </ScoreDisplay>
-                </Div>
+                </div>
               )}
               {product.nutriscore_grade && (
-                <Div>
-                  <Title>Nutri-Score</Title>
-                  <Description>
-                    A nutritional quality score for the product, from A (best)
-                    to E (worst).
-                  </Description>
-
+                <div>
+                  <h3>Nutri-Score:</h3>
                   <ScoreDisplay grade={product.nutriscore_grade}>
                     {product.nutriscore_grade.toUpperCase()}
                   </ScoreDisplay>
-                </Div>
+                </div>
               )}
             </StyledColumn>
             <StyledColumn>
@@ -307,12 +298,6 @@ export default SingleProduct;
 
 const StyledContainer = styled.div`
   background-color: rgb(250, 239, 219);
-`;
-const Description = styled.p`
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0 0 0.5rem;
-  text-align: center;
 `;
 const BannerImg = styled.img`
   position: absolute;
@@ -332,7 +317,6 @@ const Element2 = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 100px;
 `;
 
 const Name = styled.h1`
@@ -351,10 +335,6 @@ const StyledPage1 = styled.div`
 const StyledImage = styled.img`
   max-width: 100%;
   height: auto;
-`;
-const Title = styled.h3`
-  font-weight: 900;
-  padding-bottom: 30px;
 `;
 const Textarea = styled.textarea``;
 const Button = styled.button``;
@@ -382,7 +362,6 @@ const StyledPage3 = styled.div`
   grid-gap: 1rem;
   padding: 1rem;
   background-color: #afc493;
-  font-size: 30px;
 `;
 const StyledPage4 = styled.div`
   min-height: 100vh;
@@ -390,7 +369,6 @@ const StyledPage4 = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
   padding: 1rem;
-  font-size: 30px;
 `;
 const StyledPage5 = styled.div`
   min-height: 100vh;
@@ -399,7 +377,7 @@ const StyledPage5 = styled.div`
   grid-gap: 1rem;
   padding: 1rem;
   background-color: #ceddde;
-  font-size: 30px;
+  font-size: 100px;
 `;
 const StyledColumn = styled.div`
   display: flex;
@@ -445,10 +423,6 @@ const Auth0Container = styled.div`
   top: 28px;
   right: 100px;
 `;
-const Div = styled.div`
-  text-align: center;
-  padding-bottom: 50px;
-`;
 
 const ScoreDisplay = styled.span`
   display: inline-block;
@@ -456,7 +430,6 @@ const ScoreDisplay = styled.span`
   border-radius: 5px;
   font-weight: bold;
   color: white;
-  text-align: center;
 
   ${({ grade }) =>
     grade &&

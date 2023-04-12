@@ -14,9 +14,8 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const handleProductClick = (productCode) => {
-    navigate(`/products/${productCode}`);
+    navigate(`/product/${productCode}`);
   };
-
   useEffect(() => {
     if (user?.sub) {
       fetch("/api/users", {
@@ -51,7 +50,7 @@ const Profile = () => {
   async function handleDeleteReview(productId) {
     try {
       await axios.delete(`/api/review/${_id}/${productId}`);
-      fetchUserData();
+      fetchUserData(); // Refetch user data to update the displayed reviews
     } catch (error) {
       console.error("Error deleting review:", error);
     }
@@ -99,11 +98,11 @@ const Profile = () => {
       <Title>My Profile</Title>
       <Header>
         {user?.picture && <UserImg src={user.picture} alt={user?.name} />}
-        <H2>{user?.email}</H2>
+        <h2>{user?.email}</h2>
         <LogoutButton />
       </Header>
       <Section>
-        <H2>Favorites</H2>
+        <h3>Favorites:</h3>
         <FavoritesList>
           {likedProducts.map(
             (product, index) =>
@@ -119,7 +118,7 @@ const Profile = () => {
         </FavoritesList>
       </Section>
       <Section>
-        <H2>Reviews</H2>
+        <h3>Reviews:</h3>
         <ul>
           {reviews.map((review, index) => {
             const product = reviewedProducts.find(
@@ -157,10 +156,6 @@ const Container = styled.div`
   padding: 2rem;
   font-family: "Roboto", sans-serif;
   background-color: #f8f8f8;
-`;
-const H2 = styled.h2`
-  font-size: 36px;
-  padding: 10px;
 `;
 
 const Title = styled.h1`
